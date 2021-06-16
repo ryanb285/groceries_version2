@@ -49,8 +49,8 @@ now = datetime.now()
 date_time = now.strftime("%Y-%m-%d, %H:%M")
 #adapted from - https://www.programiz.com/python-programming/datetime/strftime
 
-allowed_ids = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-#to do email you need to add sendgrid package
+allowed_ids = str([id["id"] for id in products])
+#adapted from Brian Stauffer
 
 total_price = 0
 selected_ids = []
@@ -59,8 +59,13 @@ while True:
     selected_id = input("Please select a valid product ID: ")
     if selected_id.upper() == "DONE":
         break
-    else:
+    elif selected_ids == "":
+        print("Not a valid ID, please enter a valid ID")
+    elif selected_id in allowed_ids:
         selected_ids.append(selected_id)
+    else:
+        print("Not a valid ID, please enter a valid ID")
+        
 
 print("-------------------")
 print("GREEN FOODS GROCERY")
