@@ -6,7 +6,8 @@ from datetime import datetime
 load_dotenv()
 
 TAX_RATE = os.getenv("TAX")
-
+STORE_WEBSITE = os.getenv("WEBSITE")
+STORE_NAME = os.getenv("STORE")
 
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
@@ -60,7 +61,7 @@ while True:
     if selected_id.upper() == "DONE":
         break
     elif selected_ids == "":
-        print("Not a valid ID, please enter a valid ID")
+        print("Not a valid ID, please enter a valid ID") #adapted from Brian Stauffer
     elif selected_id in allowed_ids:
         selected_ids.append(selected_id)
     else:
@@ -68,8 +69,8 @@ while True:
         
 
 print("-------------------")
-print("GREEN FOODS GROCERY")
-print("WWW.GREEN-FOODS-GROCERY.COM")
+print(STORE_NAME)
+print(STORE_WEBSITE)
 print("-------------------")
 
 print("CHECKOUT AT: " + date_time)
