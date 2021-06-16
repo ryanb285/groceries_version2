@@ -2,12 +2,17 @@ import os
 import operator
 from dotenv import load_dotenv
 from datetime import datetime
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 load_dotenv()
 
 TAX_RATE = os.getenv("TAX")
 STORE_WEBSITE = os.getenv("WEBSITE")
 STORE_NAME = os.getenv("STORE")
+SENDER_ADDRESS = os.getenv("SENDER_ADDRESS_ENV")
+SENGRID_API_KEY = os.getenv("SENGRID_API_KEY_ENV")
+# couldn't get the email to work but tried to set it up
 
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
@@ -77,14 +82,13 @@ print("CHECKOUT AT: " + date_time)
 
 print("-------------------")
 print("SELECTED PRODUCTS: ")
-try:
-    for selected_id in selected_ids:
-        matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
-        matching_product = matching_products[0]
-        total_price = total_price + matching_product["price"]
-        print("..." + matching_product["name"] + " " + "("+str(to_usd((matching_product["price"])))+")")
-except IndexError:
-    print("INVALID PRODUCT ID, PLEASE RE-ENTER THE ITEM")
+
+for selected_id in selected_ids:
+    matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
+    matching_product = matching_products[0]
+    total_price = total_price + matching_product["price"]
+    print("..." + matching_product["name"] + " " + "("+str(to_usd((matching_product["price"])))+")")
+
 
         
 
@@ -98,4 +102,46 @@ print("TOTAL: " + str(to_usd(overall_cost)))
 print("-------------------")
 print("THANKS, SEE YOU AGAIN SOON!")
 
+######### begin email attempts
 
+#client = SendGridAPIClient(SENGRID_API_KEY)
+#print(client, type(client))
+
+#subject = ("Your Receipt from " + str(STORE_NAME) )
+
+#html_content = [
+    #html_list_items = "<li>You ordered: " + str(
+       # for selected_id in selected_ids:
+#            matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
+ #           matching_product = matching_products[0]
+  ##         print("..." + matching_product["name"] + " " + "("+str(to_usd((matching_product["price"])))+")")
+        
+
+#html_content = f"""
+#<h3>Hello this is your receipt</h3>
+#<p>Date: ____________</p>
+#<ol>
+#   {html_list_items}
+#</ol>
+#"""
+#print(html_content)
+#exit()
+
+
+#print("HTML:", html_content)
+
+# FYI: we'll need to use our verified SENDER_ADDRESS as the `from_email` param
+# ... but we can customize the `to_emails` param to send to other addresses
+#message = Mail(from_email=SENDER_ADDRESS, to_emails=SENDER_ADDRESS, subject=subject, html_content=html_content)
+
+#try:
+#    response = client.send(message)
+#
+#    print("RESPONSE:", type(response)) #> <class 'python_http_client.client.Response'>
+#    print(response.status_code) #> 202 indicates SUCCESS
+#    print(response.body)
+#    print(response.headers)
+
+#except Exception as err:
+#    print(type(err))
+#    print(err)
